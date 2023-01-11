@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link rel = "stylesheet" type = "text/css" href = "css/bootstrap.css" />
+ <style>
+ body{
+ margin-top:65px;
+ }
+ .well{
+ -webkit-box-shadow: -5px 3px 28px 1px rgba(179,179,179,1);
+ -moz-box-shadow: -5px 3px 28px 1px rgba(179,179,179,1);
+ box-shadow: -5px 3px 28px 1px rgba(179,179,179,1);
+     padding: 50px;
+ margin-bottom: 20px;
+ background-color: #ffffff;
+ border: 1px dotted #a20000;
+ }
+ 
+</style> 
+ 
+ </head>
+<body>
+ 
+<div class = "row">
+ <div class  = "col-md-3"></div>
+ <div class  = "col-md-6 well">
+ <h3 class = "text-success">How To Create Drag & Drop Insert Text To Input Field in Jquery</h3>
+ <hr style = "border-top: 1px dotted #8c8b8b;"/>
+ <div class = "pull-left" style = "border:1px #000 dotted; width:230px;">
+ <center><label style = "font-size:9px;" class = "alert-success">Please Drag Your Favorite Color</label></center>
+ <ul  style = "list-style-type:none;" id = "draggable">
+ <li>Red</li>
+ <li>Pink</li>
+ <li>Green</li>
+ <li>Yellow</li>
+ <li>Black</li>
+ <li>Light-Blue</li>
+ <li>Blue</li>
+ <li>Tan</li>
+ <li>Gray</li>
+ </ul>
+ <p></p>
+ </div>
+ <div class = "pull-right" style = "padding:20px; border:1px #000 dotted; width:400px;">
+ <div class = "form-group">
+ <input type = "text" name = "program" class = "form-control color ui-droppable" />
+ <center><label>Your Favorite Color</label></center>
+ <button class = "btn btn-warning pull-left" id = "reset" type = "button"><span class = "glyphicon glyphicon-refresh"></span> Reset</button>
+ </div>
+ </div> 
+ </div>
+</div>
+</body>
+<script src="js/jquery-3.1.1.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/script.js"></script>
+ 
+ <script>
+  $(document).ready(function(){
+   $('#reset').on('click', function(){
+   $('ul').attr('id', 'draggable');
+   $('.color').removeAttr('disabled', 'disabled');
+   $('.color').val('');
+   });
+ $('li').mouseover(function(){
+ $(this).css('cursor', 'pointer');
+ });
+ $( "#draggable li" ).draggable({helper: 'clone'});
+ $(".color").droppable({
+ accept: "#draggable li",
+ drop: function(ev, ui) {
+ $(this).insertAtCaret(ui.draggable.text());
+ $(this).attr('disabled', 'disabled');
+ $("#draggable").removeAttr('id');
+ }
+ });
+  });
+  
+  $.fn.insertAtCaret = function (myValue) {
+  return this.each(function(){
+  if (document.selection) {
+    this.focus();
+    sel = document.selection.createRange();
+    sel.text = myValue;
+    this.focus();
+  }
+  
+  else if (this.selectionStart || this.selectionStart == '0') {
+    var startPos = this.selectionStart;
+    var endPos = this.selectionEnd;
+    var scrollTop = this.scrollTop;
+    this.value = this.value.substring(0, startPos)+ myValue+ this.value.substring(endPos,this.value.length);
+    this.focus();
+    this.selectionStart = startPos + myValue.length;
+    this.selectionEnd = startPos + myValue.length;
+    this.scrollTop = scrollTop;
+  } else {
+    this.value += myValue;
+    this.focus();
+  }
+  });
+};
+ </script>
+</html>									
